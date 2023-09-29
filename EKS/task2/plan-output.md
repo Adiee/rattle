@@ -1,3 +1,4 @@
+```
 advait.thakkar@ITIN000759-MAC task2 % plan
 
 Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the following symbols:
@@ -547,4 +548,4 @@ Terraform will perform the following actions:
         }
     }
 
-Plan: 21 to add, 0 to change, 0 to destroy.
+Plan: 21 to add, 0 to change, 0 to destroy.````
