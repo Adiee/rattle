@@ -1,0 +1,32 @@
+resource "kubernetes_deployment" "auto_deployment" {
+  metadata {
+    name = "{{ deployment_name }}"
+    namespace = "{{ namespace }}"
+  }
+
+  spec {
+    replicas = 2
+
+    selector {
+      match_labels = {
+        app = "service-pod"
+      }
+    }
+
+    template {
+      metadata {
+        labels = {
+          app = "service-pod"
+        }
+      }
+
+      spec {
+        container {
+          name  = "service-container"
+          image = "{{ image }}" 
+        }
+      }
+    }
+  }
+}
+

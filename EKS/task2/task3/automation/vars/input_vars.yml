@@ -1,0 +1,7 @@
+---
+cluster_endpoint: "test01"
+cluster_name: "test01"
+namespace: "test01"
+deployment_name: "test01"
+image: "your-dockerhub-username/your-image-name:latest"
+service_name: "test01"

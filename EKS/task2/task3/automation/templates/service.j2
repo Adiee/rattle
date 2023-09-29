@@ -1,0 +1,25 @@
+resource "kubernetes_service" "auto_service" {
+  metadata {
+    name      = "{{ service_name }}"
+    namespace = kubernetes_namespace.auto_namespace.metadata.0.name
+  }
+
+  spec {
+    selector = {
+      app = "app-pod"
+    }
+
+    port {
+      protocol   = "TCP"
+      port       = 80
+      target_port = 80
+    }
+
+    type = "LoadBalancer"
+  }
+}
+
+
+output "service_endpoint" {
+  value = kubernetes_service.auto_service.status.0.load_balancer.0.ingress.0.ip
+}

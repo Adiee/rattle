@@ -1,0 +1,47 @@
+---
+- hosts: localhost
+  become: no  
+  gather_facts: false 
+  vars_files:
+    - vars/input_vars.yml
+
+  tasks:
+    - name: Create the directory 
+      shell: mkdir /tmp/{{ namespace }}
+
+    - name: copy providers
+      copy:
+        src: "../../provider.tf"
+        dest: "/tmp/{{ namespace }}/provider.tf"
+
+    - name: create state_store
+      template:
+        src: "state_store.j2"
+        dest: "/tmp/{{ namespace }}/state_store.tf"       
+
+    - name: Create namespace tf file
+      template:
+        src: "namespace.j2"
+        dest: "/tmp/{{ namespace }}/namespace.tf"
+      when: namespace is not none
+
+    - name: Create deployment tf file
+      template:
+        src: "deployment.j2"
+        dest: "/tmp/{{ namespace }}/deployment.tf"
+      when: deployment_name is not none
+
+    - name: Create service tf file
+      template:
+        src: "service.j2"
+        dest: "/tmp/{{ namespace }}/deployment.tf"
+      when: service_name is not none
+    
+    - name: Change to Terraform directory
+      command: cd /tmp/{{ namespace }}/
+      register: cd_result
+      changed_when: false
+
+    - name: Initialize Terraform
+      command: terraform init && terraform apply -auto-approve
+      when: cd_result is success
